@@ -41,24 +41,21 @@ export default {
           })
           .then(function(data) {
             if (!data) {
-              // console.log("linter-kibit: process killed", data);
+               console.log("linter-kibit: process killed", data);
               return null;
             }
 
             const { exitCode, stdout, stderr } = data;
 
-            // console.log("linter-kibit: data", data);
-
             if (exitCode === 1 && stdout && !stderr) {
-              const regex = /[^:]+:(\d+):\nConsider using:\n([\s\S]+)\ninstead of:\n([\s\S]+)/;
+              const regex = /[^:]+:(\d+):\nConsider using:\n([\s\S]+)\ninstead of:/;
 
               const messages = stdout
-                .split(/[\r\n]{2,}/)
+                .split('At')
                 .map(function(kibit) {
                   const exec = regex.exec(kibit);
 
                   if (!exec) {
-                    // console.log("linter-kibit: failed exec", kibit);
                     return null;
                   }
 
@@ -76,7 +73,6 @@ export default {
                 })
                 .filter(m => m); // filter out null messages
 
-              // console.log("linter-kibit: messages", messages);
 
               return messages;
             }
