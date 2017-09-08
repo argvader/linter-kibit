@@ -33,7 +33,6 @@ export default {
       grammarScopes: ["source.clojure"],
       lint(textEditor) {
         const editorPath = textEditor.getPath();
-console.log('path ', editorPath);
         return helpers
           .exec(leinExecutablePath, ["kibit", editorPath], {
             uniqueKey: linterName,
@@ -41,9 +40,8 @@ console.log('path ', editorPath);
             stream: "both"
           })
           .then(function(data) {
-            console.log('data ', data);
             if (!data) {
-               console.log("linter-kibit: process killed", data);
+              console.log("linter-kibit: process killed", data);
               return null;
             }
 
